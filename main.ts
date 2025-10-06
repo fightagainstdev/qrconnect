@@ -75,7 +75,7 @@ app.use(async (ctx, next) => {
     await next();
   } else {
     await send(ctx, ctx.request.url.pathname, {
-      root: "_static",
+      root: "./_static",
       index: "index.html",
     });
   }
