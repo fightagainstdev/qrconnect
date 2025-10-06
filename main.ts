@@ -1,10 +1,7 @@
 import { Application, Router } from "oak";
-import { config } from "dotenv";
-import { MongoClient } from "mongo";
 import { cors } from "cors";
 
-// Load environment variables
-await config({ export: true });
+// Environment variables loaded automatically in Deno Deploy
 
 const app = new Application();
 const router = new Router();
