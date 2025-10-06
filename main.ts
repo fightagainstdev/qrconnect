@@ -35,14 +35,7 @@ app.use(async (ctx, next) => {
   await next();
 });
 
-// JSON middleware
-app.use(async (ctx, next) => {
-  if (ctx.request.method === "POST" || ctx.request.method === "PUT") {
-    const body = await ctx.request.body().value;
-    ctx.state.body = body;
-  }
-  await next();
-});
+// JSON middleware removed for mock API
 
 // Mock routes for basic functionality
 router.get("/api/auth/me", (ctx) => {
