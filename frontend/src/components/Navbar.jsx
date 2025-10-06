@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuthUser from "../hooks/useAuthUser";
 import { BellIcon, LogOutIcon, ShipWheelIcon } from "lucide-react";
 import ThemeSelector from "./ThemeSelector";
@@ -7,6 +7,7 @@ import useLogout from "../hooks/useLogout";
 const Navbar = () => {
   const { authUser } = useAuthUser();
   const location = useLocation();
+  const navigate = useNavigate();
   const isChatPage = location.pathname?.startsWith("/chat");
 
   // const queryClient = useQueryClient();
@@ -16,6 +17,11 @@ const Navbar = () => {
   // });
 
   const { logoutMutation } = useLogout();
+
+  const handleLogout = () => {
+    logoutMutation();
+    navigate("/login");
+  };
 
   return (
     <nav className="bg-base-200 border-b border-base-300 sticky top-0 z-30 h-16 flex items-center">
@@ -51,7 +57,7 @@ const Navbar = () => {
           </div>
 
           {/* Logout button */}
-          <button className="btn btn-ghost btn-circle" onClick={logoutMutation}>
+          <button className="btn btn-ghost btn-circle" onClick={handleLogout}>
             <LogOutIcon className="h-6 w-6 text-base-content opacity-70" />
           </button>
         </div>

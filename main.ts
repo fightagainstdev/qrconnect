@@ -45,7 +45,7 @@ router.get("/api/auth/me", (ctx) => {
       fullName: "Test User",
       email: "test@example.com",
       bio: "Mock bio",
-      profilePic: "",
+      profilePic: "https://via.placeholder.com/40",
       nativeLanguage: "English",
       learningLanguage: "Spanish",
       location: "Mock City",
