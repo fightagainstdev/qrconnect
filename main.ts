@@ -78,6 +78,14 @@ router.get("/api/chat/token", (ctx) => {
   ctx.response.body = { token: "mocktoken" };
 });
 
+router.get("/api/users/outgoing-friend-requests", (ctx) => {
+  ctx.response.body = [];
+});
+
+router.post("/api/auth/logout", (ctx) => {
+  ctx.response.body = { message: "Logged out" };
+});
+
 // Add more routes as needed
 
 app.use(router.routes());
