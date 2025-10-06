@@ -1,4 +1,19 @@
-import { Application, Router, send } from "oak";
+import { Application, Router } from "oak";
+import { extname } from "https://deno.land/std@0.208.0/path/mod.ts";
+
+function getContentType(ext: string): string {
+  switch (ext) {
+    case ".html": return "text/html";
+    case ".js": return "application/javascript";
+    case ".css": return "text/css";
+    case ".png": return "image/png";
+    case ".jpg": return "image/jpeg";
+    case ".svg": return "image/svg+xml";
+    case ".woff": return "font/woff";
+    case ".woff2": return "font/woff2";
+    default: return "text/plain";
+  }
+}
 
 // Environment variables loaded automatically in Deno Deploy
 
@@ -74,10 +89,19 @@ app.use(async (ctx, next) => {
   if (ctx.request.url.pathname.startsWith("/api")) {
     await next();
   } else {
-    await send(ctx, ctx.request.url.pathname, {
-      root: "./_static",
-      index: "index.html",
-    });
+    const path = ctx.request.url.pathname;
+    let filePath = `_static${path}`;
+    if (path === "/") filePath = "_static/index.html";
+    try {
+      const file = await Deno.readFile(filePath);
+      const ext = extname(filePath);
+      const contentType = getContentType(ext);
+      ctx.response.headers.set("Content-Type", contentType);
+      ctx.response.body = file;
+    } catch {
+      ctx.response.status = 404;
+      ctx.response.body = "Not found";
+    }
   }
 });
 
