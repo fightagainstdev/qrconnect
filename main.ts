@@ -85,8 +85,6 @@ app.use(async (ctx, next) => {
   }
 });
 
-const PORT = parseInt(Deno.env.get("PORT") || "5001");
+console.log("Server starting");
 
-console.log(`Server running on port ${PORT}`);
-
-await app.listen({ port: PORT });
+await app.listen();
