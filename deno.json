@@ -1,6 +1,3 @@
 {
-  "main": "main.ts",
-  "imports": {
-    "oak": "https://deno.land/x/oak@v12.6.1/mod.ts"
-  }
+  "static": "_static"
 }
