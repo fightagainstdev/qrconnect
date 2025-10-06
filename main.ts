@@ -68,19 +68,22 @@ router.get("/api/chat/token", (ctx) => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-// Serve static files for production
-if (Deno.env.get("NODE_ENV") === "production") {
-  app.use(async (ctx, next) => {
+// Serve static files
+app.use(async (ctx, next) => {
+  if (ctx.request.url.pathname.startsWith("/api")) {
+    await next();
+  } else {
     try {
       await ctx.send({
         root: "_static",
         index: "index.html",
       });
     } catch {
-      await next();
+      ctx.response.status = 404;
+      ctx.response.body = "Not found";
     }
-  });
-}
+  }
+});
 
 const PORT = parseInt(Deno.env.get("PORT") || "5001");
 
