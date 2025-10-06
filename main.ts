@@ -14,21 +14,26 @@ Deno.serve(async (request) => {
     }
   }
 
-  // Serve static files, fallback to index.html for SPA routes
-  try {
-    const response = await serveDir(request, {
-      fsRoot: ".",
-      urlRoot: "",
-    });
-    if (response.status === 404 && !url.pathname.includes(".")) {
-      // For SPA routes without extension, serve index.html
-      return serveDir(new Request(`${url.origin}/index.html`), {
+  // Serve static files or index.html for SPA
+  const isStatic = url.pathname.includes(".") || url.pathname.startsWith("/assets/");
+  if (isStatic) {
+    try {
+      return await serveDir(request, {
         fsRoot: ".",
         urlRoot: "",
       });
+    } catch {
+      return new Response("Not Found", { status: 404 });
     }
-    return response;
-  } catch {
-    return new Response("Not Found", { status: 404 });
+  } else {
+    // For SPA routes, serve index.html
+    try {
+      return await serveDir(new Request(`${url.origin}/index.html`), {
+        fsRoot: ".",
+        urlRoot: "",
+      });
+    } catch {
+      return new Response("Not Found", { status: 404 });
+    }
   }
 });
