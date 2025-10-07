@@ -8,8 +8,8 @@ Deno.serve(async (request) => {
     const route = url.pathname;
 
     // Static route handlers
-    const routes: Record<string, (request: Request) => Promise<Response> | Response> = {
-      "/api/auth/me": async (request: Request) => {
+    const routes: Record<string, (request: Request) => Response> = {
+      "/api/auth/me": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -42,7 +42,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/auth/login": async (request: Request) => {
+      "/api/auth/login": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -77,7 +77,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/auth/logout": async (request: Request) => {
+      "/api/auth/logout": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -97,7 +97,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/auth/signup": async (request: Request) => {
+      "/api/auth/signup": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -132,7 +132,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/auth/onboarding": async (request: Request) => {
+      "/api/auth/onboarding": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -167,7 +167,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/users": async (request: Request) => {
+      "/api/users": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -187,7 +187,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/users/friends": async (request: Request) => {
+      "/api/users/friends": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -207,7 +207,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/users/friend-requests": async (request: Request) => {
+      "/api/users/friend-requests": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -227,7 +227,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/users/outgoing-friend-requests": async (request: Request) => {
+      "/api/users/outgoing-friend-requests": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
@@ -247,7 +247,7 @@ Deno.serve(async (request) => {
           },
         });
       },
-      "/api/chat/token": async (request: Request) => {
+      "/api/chat/token": (request: Request) => {
         if (request.method === "OPTIONS") {
           return new Response(null, {
             headers: {
