@@ -1,5 +1,17 @@
 import { serveDir } from "https://deno.land/std@0.208.0/http/file_server.ts";
 
+// Import API handlers
+import meHandler from "./api/auth/me.ts";
+import loginHandler from "./api/auth/login.ts";
+import logoutHandler from "./api/auth/logout.ts";
+import signupHandler from "./api/auth/signup.ts";
+import onboardingHandler from "./api/auth/onboarding.ts";
+import usersHandler from "./api/users/index.ts";
+import friendsHandler from "./api/users/friends.ts";
+import friendRequestsHandler from "./api/users/friend-requests.ts";
+import outgoingFriendRequestsHandler from "./api/users/outgoing-friend-requests.ts";
+import chatTokenHandler from "./api/chat/token.ts";
+
 Deno.serve(async (request) => {
   const url = new URL(request.url);
 
@@ -9,16 +21,16 @@ Deno.serve(async (request) => {
 
     // Static route handlers
     const routes: Record<string, (request: Request) => Promise<Response> | Response> = {
-      "/api/auth/me": (await import("./api/auth/me.ts")).default,
-      "/api/auth/login": (await import("./api/auth/login.ts")).default,
-      "/api/auth/logout": (await import("./api/auth/logout.ts")).default,
-      "/api/auth/signup": (await import("./api/auth/signup.ts")).default,
-      "/api/auth/onboarding": (await import("./api/auth/onboarding.ts")).default,
-      "/api/users": (await import("./api/users/index.ts")).default,
-      "/api/users/friends": (await import("./api/users/friends.ts")).default,
-      "/api/users/friend-requests": (await import("./api/users/friend-requests.ts")).default,
-      "/api/users/outgoing-friend-requests": (await import("./api/users/outgoing-friend-requests.ts")).default,
-      "/api/chat/token": (await import("./api/chat/token.ts")).default,
+      "/api/auth/me": meHandler,
+      "/api/auth/login": loginHandler,
+      "/api/auth/logout": logoutHandler,
+      "/api/auth/signup": signupHandler,
+      "/api/auth/onboarding": onboardingHandler,
+      "/api/users": usersHandler,
+      "/api/users/friends": friendsHandler,
+      "/api/users/friend-requests": friendRequestsHandler,
+      "/api/users/outgoing-friend-requests": outgoingFriendRequestsHandler,
+      "/api/chat/token": chatTokenHandler,
     };
 
     // Dynamic routes
