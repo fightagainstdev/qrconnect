@@ -1,3 +1,4 @@
 {
-  "main": "main.ts"
+  "main": "main.ts",
+  "type": "server"
 }
