@@ -5,19 +5,33 @@ Deno.serve(async (request) => {
 
   // Handle API routes
   if (url.pathname.startsWith("/api/")) {
-    try {
-      let modulePath = `./${url.pathname}.ts`;
+    const route = url.pathname;
 
-      // Handle dynamic routes
-      if (url.pathname.match(/^\/api\/users\/friend-request\/\w+$/)) {
-        modulePath = `./api/users/friend-request.ts`;
-      } else if (url.pathname.match(/^\/api\/users\/friend-request\/\w+\/accept$/)) {
-        modulePath = `./api/users/friend-request-accept.ts`;
-      }
+    // Static route handlers
+    const routes: Record<string, (request: Request) => Promise<Response> | Response> = {
+      "/api/auth/me": (await import("./api/auth/me.ts")).default,
+      "/api/auth/login": (await import("./api/auth/login.ts")).default,
+      "/api/auth/logout": (await import("./api/auth/logout.ts")).default,
+      "/api/auth/signup": (await import("./api/auth/signup.ts")).default,
+      "/api/auth/onboarding": (await import("./api/auth/onboarding.ts")).default,
+      "/api/users": (await import("./api/users/index.ts")).default,
+      "/api/users/friends": (await import("./api/users/friends.ts")).default,
+      "/api/users/friend-requests": (await import("./api/users/friend-requests.ts")).default,
+      "/api/users/outgoing-friend-requests": (await import("./api/users/outgoing-friend-requests.ts")).default,
+      "/api/chat/token": (await import("./api/chat/token.ts")).default,
+    };
 
-      const handler = (await import(modulePath)).default;
+    // Dynamic routes
+    if (route.match(/^\/api\/users\/friend-request\/\w+$/)) {
+      return (await import("./api/users/friend-request.ts")).default(request);
+    } else if (route.match(/^\/api\/users\/friend-request\/\w+\/accept$/)) {
+      return (await import("./api/users/friend-request-accept.ts")).default(request);
+    }
+
+    const handler = routes[route];
+    if (handler) {
       return handler(request);
-    } catch (error) {
+    } else {
       return new Response("Not Found", { status: 404 });
     }
   }
