@@ -10,36 +10,8 @@ Deno.serve(async (request) => {
     // Static route handlers
     const routes: Record<string, (request: Request) => Response> = {
       "/api/auth/me": (request: Request) => {
-        if (request.method === "OPTIONS") {
-          return new Response(null, {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-              "Access-Control-Allow-Headers": "Content-Type, Authorization",
-            },
-          });
-        }
-
-        const user = {
-          _id: "mockid",
-          fullName: "Test User",
-          email: "test@example.com",
-          bio: "Mock bio",
-          profilePic: "https://via.placeholder.com/40",
-          nativeLanguage: "English",
-          learningLanguage: "Spanish",
-          location: "Mock City",
-          isOnboarded: true,
-          friends: []
-        };
-
-        return new Response(JSON.stringify({ user }), {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          },
+        return new Response('{"user":{"id":"test"}}', {
+          headers: { "Content-Type": "application/json" }
         });
       },
       "/api/auth/login": (request: Request) => {
