@@ -1,17 +1,5 @@
 import { serveDir } from "https://deno.land/std@0.208.0/http/file_server.ts";
 
-// Import API handlers
-import meHandler from "./api/auth/me.ts";
-import loginHandler from "./api/auth/login.ts";
-import logoutHandler from "./api/auth/logout.ts";
-import signupHandler from "./api/auth/signup.ts";
-import onboardingHandler from "./api/auth/onboarding.ts";
-import usersHandler from "./api/users/index.ts";
-import friendsHandler from "./api/users/friends.ts";
-import friendRequestsHandler from "./api/users/friend-requests.ts";
-import outgoingFriendRequestsHandler from "./api/users/outgoing-friend-requests.ts";
-import chatTokenHandler from "./api/chat/token.ts";
-
 Deno.serve(async (request) => {
   const url = new URL(request.url);
 
@@ -21,23 +9,323 @@ Deno.serve(async (request) => {
 
     // Static route handlers
     const routes: Record<string, (request: Request) => Promise<Response> | Response> = {
-      "/api/auth/me": meHandler,
-      "/api/auth/login": loginHandler,
-      "/api/auth/logout": logoutHandler,
-      "/api/auth/signup": signupHandler,
-      "/api/auth/onboarding": onboardingHandler,
-      "/api/users": usersHandler,
-      "/api/users/friends": friendsHandler,
-      "/api/users/friend-requests": friendRequestsHandler,
-      "/api/users/outgoing-friend-requests": outgoingFriendRequestsHandler,
-      "/api/chat/token": chatTokenHandler,
+      "/api/auth/me": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        const user = {
+          _id: "mockid",
+          fullName: "Test User",
+          email: "test@example.com",
+          bio: "Mock bio",
+          profilePic: "https://via.placeholder.com/40",
+          nativeLanguage: "English",
+          learningLanguage: "Spanish",
+          location: "Mock City",
+          isOnboarded: true,
+          friends: []
+        };
+
+        return new Response(JSON.stringify({ user }), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/auth/login": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        if (request.method !== "POST") {
+          return new Response("Method Not Allowed", { status: 405 });
+        }
+
+        // Mock login response
+        const response = {
+          message: "Login successful",
+          token: "mock-jwt-token",
+          user: {
+            _id: "mockid",
+            fullName: "Test User",
+            email: "test@example.com",
+          }
+        };
+
+        return new Response(JSON.stringify(response), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/auth/logout": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        return new Response(JSON.stringify({ message: "Logged out" }), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/auth/signup": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        if (request.method !== "POST") {
+          return new Response("Method Not Allowed", { status: 405 });
+        }
+
+        // Mock signup response
+        const response = {
+          message: "Signup successful",
+          token: "mock-jwt-token",
+          user: {
+            _id: "mockid",
+            fullName: "New User",
+            email: "new@example.com",
+          }
+        };
+
+        return new Response(JSON.stringify(response), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/auth/onboarding": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        if (request.method !== "POST") {
+          return new Response("Method Not Allowed", { status: 405 });
+        }
+
+        // Mock onboarding response
+        const response = {
+          message: "Onboarding completed",
+          user: {
+            _id: "mockid",
+            fullName: "Test User",
+            email: "test@example.com",
+            isOnboarded: true,
+          }
+        };
+
+        return new Response(JSON.stringify(response), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/users": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        return new Response(JSON.stringify([]), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/users/friends": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        return new Response(JSON.stringify([]), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/users/friend-requests": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        return new Response(JSON.stringify([]), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/users/outgoing-friend-requests": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        return new Response(JSON.stringify([]), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
+      "/api/chat/token": async (request: Request) => {
+        if (request.method === "OPTIONS") {
+          return new Response(null, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            },
+          });
+        }
+
+        return new Response(JSON.stringify({ token: "mocktoken" }), {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      },
     };
 
     // Dynamic routes
     if (route.match(/^\/api\/users\/friend-request\/\w+$/)) {
-      return (await import("./api/users/friend-request.ts")).default(request);
+      if (request.method === "OPTIONS") {
+        return new Response(null, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      }
+
+      if (request.method !== "POST") {
+        return new Response("Method Not Allowed", { status: 405 });
+      }
+
+      // Mock send friend request response
+      const response = {
+        message: "Friend request sent",
+      };
+
+      return new Response(JSON.stringify(response), {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+      });
     } else if (route.match(/^\/api\/users\/friend-request\/\w+\/accept$/)) {
-      return (await import("./api/users/friend-request-accept.ts")).default(request);
+      if (request.method === "OPTIONS") {
+        return new Response(null, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
+        });
+      }
+
+      if (request.method !== "PUT") {
+        return new Response("Method Not Allowed", { status: 405 });
+      }
+
+      // Mock accept friend request response
+      const response = {
+        message: "Friend request accepted",
+      };
+
+      return new Response(JSON.stringify(response), {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+      });
     }
 
     const handler = routes[route];
