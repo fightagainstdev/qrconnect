@@ -1,4 +1,4 @@
-import { serveDir } from "https://deno.land/std@0.208.0/http/file_server.ts";
+import { serveDir } from "https://deno.land/std@0.224.0/http/file_server.ts";
 
 Deno.serve(async (request) => {
   const url = new URL(request.url);
