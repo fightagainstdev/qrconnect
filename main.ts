@@ -6,7 +6,15 @@ Deno.serve(async (request) => {
   // Handle API routes
   if (url.pathname.startsWith("/api/")) {
     try {
-      const modulePath = `./${url.pathname}.ts`;
+      let modulePath = `./${url.pathname}.ts`;
+
+      // Handle dynamic routes
+      if (url.pathname.match(/^\/api\/users\/friend-request\/\w+$/)) {
+        modulePath = `./api/users/friend-request.ts`;
+      } else if (url.pathname.match(/^\/api\/users\/friend-request\/\w+\/accept$/)) {
+        modulePath = `./api/users/friend-request-accept.ts`;
+      }
+
       const handler = (await import(modulePath)).default;
       return handler(request);
     } catch (error) {
